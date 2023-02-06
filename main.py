@@ -155,6 +155,19 @@ class Proceso():
 				self.id = id
 				self.tiempoEstimado = tiempoEstimado
 
+class Cronometro(QtCore.QThread):
+	segundo = QtCore.pyqtSignal(int)
+	
+	def __init__(self):
+		super(Cronometro, self).__init__(None)
+		
+	
+	#se inicia o continua el proceso
+	def run(self):
+		while True:
+			time.sleep(1)#para que se alcancen a reflejar los cambios en la interfaz
+			self.segundo.emit(1)
+
 class VentanaPrincipal(QtWidgets.QMainWindow):
 	def __init__(self):
 		QtWidgets.QMainWindow.__init__(self)
@@ -170,12 +183,16 @@ class VentanaPrincipal(QtWidgets.QMainWindow):
 		finally:
 			archivo.close()
 
+		self.primerHilo = Cronometro()
+		self.primerHilo.segundo.connect(self.autoGuardado)
+		self.primerHilo.start()
+		
+	def autoGuardado(self,senial):
 		try:
-			while True:
-				archivo2 = open("demofile.txt", "r")
+			if senial == 1:
+				archivo2 = open("demofile.txt", "w")
 				escribir = self.areaDeTexto.toPlainText()
-				print(escribir)
-				time.sleep(3)
+				archivo2.write(escribir)
 				archivo2.close()
 		except:
 			print("No se pudo guardar archivo")
