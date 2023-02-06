@@ -160,7 +160,29 @@ class VentanaPrincipal(QtWidgets.QMainWindow):
 		QtWidgets.QMainWindow.__init__(self)
 		self.ui = uic.loadUi('prueba.ui',self)#Se carga la interfaz grafica
 
-		self.colaProcesosFCFS = []
+		try:
+			archivo = open("demofile.txt", "r")
+			texto = archivo.read()
+			self.areaDeTexto.setPlainText(texto)
+			
+		except:
+			print("No se pudo abrir el archivo")
+		finally:
+			archivo.close()
+
+		try:
+			while True:
+				archivo2 = open("demofile.txt", "r")
+				escribir = self.areaDeTexto.toPlainText()
+				print(escribir)
+				time.sleep(3)
+				archivo2.close()
+		except:
+			print("No se pudo guardar archivo")
+		finally:
+			archivo2.close()
+
+		"""self.colaProcesosFCFS = []
 		self.colaProcesosRR = []
 		self.colaProcesosSJF = []
 
@@ -194,7 +216,7 @@ class VentanaPrincipal(QtWidgets.QMainWindow):
 			self.tablaSJF.setItem(i,1,tablaPorcentaje)
 			
 		self.btnI2.clicked.connect(self.iniciaRR)
-		self.btnI3.clicked.connect(self.iniciaSJF)
+		self.btnI3.clicked.connect(self.iniciaSJF)"""
 
 	#para reordenar la tabla como si fuera una fila
 	def reordenarTablaFCFS(self,senial):
