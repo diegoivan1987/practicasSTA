@@ -12,10 +12,12 @@ def get_targets():
 
     i = 0
     while i < len(targets):
+
         if not targets[i].endswith('.exe'):
             targets[i] = targets[i] + '.exe'
         i += 1
-    return target
+
+    return targets
 
 def lock(target):
     for proc in psutil.process_iter():
